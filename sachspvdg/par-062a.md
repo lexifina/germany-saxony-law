@@ -19,7 +19,7 @@ Soweit es sich bei der in Satz 1 Nummer 2 und 3 in Bezug genommenen Straftat um 
 (4) Zum Zweck eines besonderen automatisierten Datenabgleichs oder einer automatisierten Datenanalyse können eigene Vorgangsdaten, Falldaten, Daten aus polizeilichen Auskunftssystemen, Verkehrsdaten, Daten aus Asservaten und Daten aus dem polizeilichen Informationsaustausch zusammengeführt werden. Datensätze aus gezielten Abfragen in gesondert geführten staatlichen Registern können ergänzend einbezogen werden, soweit dies zur Aufklärung des Sachverhalts im Einzelfall erforderlich ist. Personenbezogene Daten, die durch einen besonderen automatisierten Datenabgleich verarbeitet oder für eine automatisierte Datenanalyse zusammengeführt werden sollen, müssen nach § 81 gekennzeichnet sein. Von einer Verarbeitung durch automatisierte Datenanalyse sind ausgenommen:
 1. personenbezogene Daten von Unbeteiligten aus der Vorgangsbearbeitung,
 2.
-personenbezogene Daten, die aus einer Wohnraumüberwachung oder durch eine Maßnahme nach § 57 Absatz 5 Satz 2 gewonnen wurden oder die nach § 79a Absatz 4 Satz 3 erlangt wurden, und
+personenbezogene Daten, die aus einer Wohnraumüberwachung gewonnen wurden oder von nach § 79a Absatz 4 Satz 3 erlangten Daten, und
 3. biometrische Daten.
 Von einer Verarbeitung durch besonderen automatisierten Datenabgleich sind die in Satz 5 Nummer 2 und 3 bezeichneten Daten ausgenommen. Bei einer Maßnahme nach Absatz 2 Satz 1 Nummer 3 dürfen keine Verkehrsdaten aus Funkzellenabfragen einbezogen werden.
 (5) Der Einsatz selbstlernender Systeme ist nur zulässig
