@@ -9,7 +9,7 @@ FRL Gesundheit und Versorgung vom 13. Dezember 2023 (SächsABl. 2024 S. 6), enth
 b)
 FRL Tierschutz vom 14. November 2023 (SächsABl. S. 1511), die zuletzt durch die Richtlinie vom 4. November 2025 (SächsABl. S. 1095) geändert worden ist, zuletzt enthalten in der Verwaltungsvorschrift vom 4. Dezember 2025 (SächsABl. SDr. S. S 272), in der jeweils geltenden Fassung,
 c)
-im Rahmen des Paktes für den Öffentlichen Gesundheitsdienst vom 29. September 2020 auf der Grundlage der jeweiligen Verwaltungsvereinbarungen mit den Landkreisen und Kreisfreien Städten,
+(gestrichen),
 d)
 FRL Selbstbestimmte Teilhabe vom 20. Dezember 2022 (SächsABl. 2023 S. 76), die durch die Richtlinie vom 26. Juli 2023 (SächsABl. S. 1138) geändert worden ist, zuletzt enthalten in der Verwaltungsvorschrift vom 4. Dezember 2025 (SächsABl. SDr. S. S 272) in der jeweils geltenden Fassung,
 e)
