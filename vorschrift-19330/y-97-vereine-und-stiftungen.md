@@ -23,8 +23,3 @@ Lfd. Nr. | Tarif- stelle | Gegenstand | Gebühren EUR | Schlicht- hoheit- liche 
  |  |  | Anmerkung: Soweit die Stiftung steuerbegünstigt ist, werden gemäß § 14 SächsStiftG keine Kosten erhoben. | 
  | 14. | Aufsichtsmaßnahmen nach § 11 Abs. 2 bis 6 SächsStiftG | 67 bis 1 515 | 
  |  |  | Anmerkung: Auf die sachliche Verwaltungskostenfreiheit gemäß § 11 Abs. 1 Nr. 1 SächsVwKG wird hingewiesen. | 
- | 15. | Ausstellen einer Bescheinigung über die Berechtigung, die Stiftung gerichtlich und außergerichtlich vertreten zu dürfen | 30 bis 250 | 
- | 16. | Erstellung eines beglaubigten Abdrucks aus dem Stiftungsverzeichnis nach § 13 SächsStiftG | 5 je Beglaubigung | 
- |  |  | Anmerkung zu Tarifstelle 15 und 16: Soweit die Stiftung steuerbegünstigt ist, werden gemäß § 14 SächsStiftG keine Kosten erhoben. | 
- | 17. | Erteilung einer Auskunft aus dem Stiftungsverzeichnis nach § 13 SächsStiftG | 12 je Auskunft und Stiftung | 
- |  |  | Anmerkungen: (1) Die Kosten sind nicht zu erheben, wenn es sich um eine Auskunft einfacher Art, zum Beispiel eine telefonische Auskunft, handelt. (2) Soweit die Stiftung steuerbegünstigt ist, werden gemäß § 14 SächsStiftG keine Kosten erhoben. | 
