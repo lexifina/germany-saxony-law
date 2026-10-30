@@ -22,6 +22,7 @@ CACHE = HERE / '.cache'
 BASE = 'https://www.revosax.sachsen.de'
 RETRIEVED = '2026-10-30'
 PART_SIZE = 50
+SLUGS: dict[str, str] = {}  # act slug -> REVOSax id, filled in index order
 MONTHS = {m: i + 1 for i, m in enumerate(['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August',
                                            'September', 'Oktober', 'November', 'Dezember'])}
 VOID = {'br', 'img', 'hr', 'input', 'meta', 'link', 'col', 'wbr'}
@@ -305,7 +306,8 @@ def parse_page(raw: str) -> dict:
                 continue
             elif titled(k):
                 close()
-                head = next((x for x in k.kids if isinstance(x, Node) and x.tag in ('h3', 'h4', 'h5')), None)
+                head = next((x for x in k.kids if isinstance(x, Node)), None)  # a heading only if it comes first
+                head = head if head is not None and head.tag in ('h3', 'h4', 'h5') else None
                 cur.update(tag=k.tag, title=norm(k.attrs.get('title') or ''), link=k.attrs.get('data-link') or '',
                            level=int(k.attrs.get('data-level') or 1), body=[], notes=[],
                            head=norm(text_of(head, ' ')) if head is not None and k.tag != 'header' else '')
@@ -392,6 +394,8 @@ def act_of(i: str) -> tuple[dict | None, dict, list[str]]:
     slug = ('verfassung' if i == '3975' else
             re.sub(r'[^a-z0-9]+', '-', abk.lower().translate(str.maketrans('äöüß', 'aous'))).strip('-') if abk
             else f'vorschrift-{i}')
+    if SLUGS.setdefault(slug, i) != i:  # two acts with one abbreviation: the later one (index order) gets its id
+        slug = f'{slug}-{i}'
     act = {'slug': slug, 'short': abk or ('SächsVerf' if i == '3975' else title[:60]), 'title': title,
            'url': f'{BASE}/vorschrift/{i}', 'first_law': None, 'earlier_laws': [], 'versions': versions}
     return act, laws, problems
