@@ -149,7 +149,11 @@ def lines(n: Node) -> list[str]:
             flush()
             dt = ''
             for x in k.kids:
-                if not isinstance(x, Node):
+                if not isinstance(x, Node) or x.tag not in ('dt', 'dd'):
+                    t = norm(x if isinstance(x, str) else text_of(x, ' '))
+                    if t:  # loose text in the list (a dd the page left out): the entry's text
+                        out.append(f'{dt} {t}' if dt else t)
+                        dt = ''
                     continue
                 if x.tag == 'dt':
                     if dt:
@@ -213,6 +217,8 @@ def unit_key(title: str, link: str, seen: set[str]) -> tuple[str, str]:
             pre = 'wrv-art'
         k = f'{pre}-{int(m.group(2)):03d}{m.group(3)}' + (f'-{int(m.group(4)):03d}{m.group(5)}' if m.group(4) else '')
         kind = pre
+    elif title.startswith('Inhalts'):
+        k, kind = '000-inhaltsuebersicht', 'toc'
     elif re.match(r'(?i)pr(ä|ae)ambel', title):
         k, kind = '001-praeambel', 'preamble'
     elif re.match(r'^(Anlage|Anhang|Tabelle|Muster|Verzeichnis)', title):
@@ -232,7 +238,21 @@ def unit_key(title: str, link: str, seen: set[str]) -> tuple[str, str]:
     return k, kind
 
 
+TITLED = ('section', 'nav', 'header')
+
+
+def titled(n) -> bool:
+    return isinstance(n, Node) and n.tag in TITLED and (n.tag == 'header' or bool(n.attrs.get('title')))
+
+
+def has_titled(n: Node) -> bool:
+    return any(titled(k) or (isinstance(k, Node) and has_titled(k)) for k in n.kids)
+
+
 def parse_page(raw: str) -> dict:
+    """The article as units in document order: every titled section (and the Inhaltsübersicht and Eingangsformel)
+    starts a unit; everything up to the next titled section belongs to it. A section holding only its heading is a
+    heading line above the next unit."""
     t = Tree()
     t.feed(raw)
     art = find(t.root, lambda n: n.tag == 'article' and n.attrs.get('id') == 'lesetext')
@@ -245,35 +265,61 @@ def parse_page(raw: str) -> dict:
     seen: set[str] = set()
     pending: list[str] = []
     order: list[str] = []
-    for top in art.kids:
-        if not isinstance(top, Node):
-            continue
-        if top.tag == 'header':
-            units['000-eingang'] = {'label': 'Eingangsformel', 'kind': 'title', 'text': '\n'.join(
-                ['# ' + l if i == 0 else l for i, l in enumerate(lines(top))]) + '\n'}
-            seen.add('000-eingang')
-            order.append('000-eingang')
-            notes['000-eingang'] = fn_titles(top)
-        elif top.tag == 'div':
-            secs = [k for k in top.kids if isinstance(k, Node) and k.tag == 'section']
-            for s in secs:
-                st = norm(s.attrs.get('title') or '')
-                body_nodes = [k for k in s.kids if not (isinstance(k, Node) and k.tag in ('h3', 'h4', 'h5'))]
-                head = find(s, lambda n: n.tag in ('h3', 'h4', 'h5'))
-                head_txt = norm(text_of(head, ' ')) if head else st
-                body = Node('x', {}, None)
-                body.kids = body_nodes
-                bl = lines(body)
-                if not bl:
-                    level = int(s.attrs.get('data-level') or 1)
-                    pending.append('#' * min(level + 1, 6) + ' ' + head_txt)
-                    continue
-                key, kind = unit_key(st or head_txt, s.attrs.get('data-link') or '', seen)
-                units[key] = {'label': re.sub(r'\s*\[.*$', '', st or head_txt) or head_txt, 'kind': kind,
-                              'text': '\n'.join(pending + ['# ' + head_txt] + bl) + '\n'}
-                notes[key] = fn_titles(s)
-                pending.clear()
-                order.append(key)
+    cur: dict = {}
+
+    def close():
+        if not cur:
+            return
+        if not cur['body']:
+            if cur['head']:
+                pending.append('#' * min(cur['level'] + 1, 6) + ' ' + cur['head'])
+        else:
+            if cur['tag'] == 'header':
+                key, kind, label = '000-eingang', 'title', 'Eingangsformel'
+                seen.add(key)
+                text = '\n'.join(pending + ['# ' + cur['body'][0]] + cur['body'][1:])
+            else:
+                key, kind = unit_key(cur['title'] or cur['head'], cur['link'], seen)
+                label = re.sub(r'\s*\[.*$', '', cur['title'] or cur['head']) or cur['head'] or key
+                text = '\n'.join(pending + ([f'# {cur["head"]}'] if cur['head'] else []) + cur['body'])
+            units[key] = {'label': label, 'kind': kind, 'text': text + '\n'}
+            notes[key] = cur['notes']
+            order.append(key)
+            pending.clear()
+        cur.clear()
+
+    def add(ls: list[str], node: Node):
+        if not cur:  # text before any titled section
+            cur.update(tag='section', title='Text', head='', link='', level=1, body=[], notes=[])
+        cur['body'] += ls
+        cur['notes'] += fn_titles(node)
+
+    def walk(n: Node):
+        for k in n.kids:
+            if isinstance(k, str):
+                if norm(k):
+                    w = Node('x', {}, None)
+                    w.kids = [k]
+                    add(lines(w), w)
+            elif k.tag == 'footer':
+                continue
+            elif titled(k):
+                close()
+                head = next((x for x in k.kids if isinstance(x, Node) and x.tag in ('h3', 'h4', 'h5')), None)
+                cur.update(tag=k.tag, title=norm(k.attrs.get('title') or ''), link=k.attrs.get('data-link') or '',
+                           level=int(k.attrs.get('data-level') or 1), body=[], notes=[],
+                           head=norm(text_of(head, ' ')) if head is not None and k.tag != 'header' else '')
+                rest = Node(k.tag, {}, None)
+                rest.kids = [x for x in k.kids if x is not head or k.tag == 'header']
+                walk(rest)
+            elif has_titled(k):
+                walk(k)
+            else:
+                w = Node('x', {}, None)
+                w.kids = [k]
+                add(lines(w), k)
+    walk(art)
+    close()
     if pending and order:
         units[order[-1]]['text'] += '\n'.join(pending) + '\n'
     return {'title': title, 'from': de_date(m.group(1)) if m else None, 'to': de_date(m2.group(1)) if m2 else None,
@@ -336,6 +382,13 @@ def act_of(i: str) -> tuple[dict | None, dict, list[str]]:
         return None, laws, problems
     m = re.search(r'\((?:[^()]*?[–-]\s*)?([A-Za-zÄÖÜäöüß][\wÄÖÜäöüß./-]*)\)\s*$', title)
     abk = m.group(1) if m and len(m.group(1)) < 30 and ' ' not in m.group(1) else None
+    if not abk:  # the abbreviation the Eingangsformel of the newest version gives: "(SächsKAG)"
+        head = '\n'.join(u['text'] for u in list(versions[-1]['units'].values())[:3])
+        m = re.search(r'\((?:[^()]*?[–-]\s*)?([A-ZÄÖÜ][\wÄÖÜäöüß./-]{1,28})\)', head)
+        abk = m.group(1) if m and re.search(r'(?:G|O|StV)$', m.group(1)) else None
+        if not abk:
+            m = re.search(r'\b(Sächs[A-ZÄÖÜ][\wÄÖÜäöüß]*(?:G|O))\b', head.split('\n', 3)[-1] if False else head)
+            abk = m.group(1) if m else None
     slug = ('verfassung' if i == '3975' else
             re.sub(r'[^a-z0-9]+', '-', abk.lower().translate(str.maketrans('äöüß', 'aous'))).strip('-') if abk
             else f'vorschrift-{i}')

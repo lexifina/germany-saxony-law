@@ -32,7 +32,7 @@ def source(raw: str) -> str:
     s = s[s.index('>') + 1:s.index('</article>')]
     s = re.sub(r'(?s)<footer.*?</footer>', '', s)
     s = re.sub(r'(?s)<ol([^>]*)>(.*?)</ol>', number_items, s)  # the numbers the browser shows
-    s = re.sub(r'(?s)<a href="#FNID[^"]*"[^>]*>.*?</a>|<sup class="satzzahl[^"]*">.*?</sup>', '', s)
+    s = re.sub(r'(?s)<a [^>]*href="#FNID[^"]*"[^>]*>.*?</a>|<sup class="satzzahl[^"]*">.*?</sup>', '', s)
     return ld(html.unescape(re.sub(r'<[^>]+>', ' ', s)).replace('­', ''))
 
 
