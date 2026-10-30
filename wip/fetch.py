@@ -3,6 +3,7 @@
     python -X utf8 fetch.py index                 # /alphaindex?letter=A..Z
     python -X utf8 fetch.py acts 3975 ...         # each act's current page, then each historical version page
     python -X utf8 fetch.py acts --gesetze        # every Gesetz in the cached index (Verfassung first)
+    python -X utf8 fetch.py acts --verordnungen   # every Verordnung in the cached index
 
 Private (never published). One process, one request at a time, at least 2.5 s apart (robots.txt has rules only for
 FSSachsenBot; no Crawl-delay), curl with a browser User-Agent, cached by name; stops on 403/429 or a challenge page.
@@ -59,6 +60,19 @@ def gesetze() -> list[str]:
     return ids
 
 
+def verordnungen() -> list[str]:
+    """Act ids whose index entry names a Verordnung (", VO", ", ZustVO", ... or a one-word name ending in VO) and
+    that are not Gesetze, in index order."""
+    g = set(gesetze())
+    ids = []
+    for f in sorted((CACHE / 'index').glob('*.html')):
+        for i, t in re.findall(r'<a href="/vorschrift/(\d+)"><img[^>]*/>([^<]*)</a>', f.read_text(encoding='utf-8')):
+            t = html.unescape(t).strip()
+            if (re.search(r', [\wÄÖÜäöüß-]*VO;?$', t) or re.fullmatch(r'[\wÄÖÜäöüß-]+VO', t)) and i not in ids and i not in g:
+                ids.append(i)
+    return ids
+
+
 def act(i: str):
     cur = CACHE / 'act' / i / 'current.html'
     if get(f'{BASE}/vorschrift/{i}', cur) != 200:
@@ -71,7 +85,8 @@ if __name__ == '__main__':
     if sys.argv[1] == 'index':
         index()
     elif sys.argv[1] == 'acts':
-        ids = (['3975'] + [i for i in gesetze() if i != '3975']) if sys.argv[2:] == ['--gesetze'] else sys.argv[2:]
+        ids = (['3975'] + [i for i in gesetze() if i != '3975']) if sys.argv[2:] == ['--gesetze'] else (
+            verordnungen() if sys.argv[2:] == ['--verordnungen'] else sys.argv[2:])
         for n, i in enumerate(ids):
             act(i)
             print(n, i, flush=True)

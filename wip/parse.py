@@ -5,6 +5,7 @@
 Reads only the cache; the same cache gives the same bytes. Parts:
   10-verfassung.json   the Verfassung des Freistaates Sachsen, every version REVOSax holds
   20-gesetze-NN.json   the other Gesetze, in the keyword index's order, about 50 acts a part
+  40-verordnungen-NN.json   the Verordnungen, in the keyword index's order, about 50 acts a part
 A part is written only when every act it holds is complete in the cache.
 """
 from __future__ import annotations
@@ -453,6 +454,19 @@ def gesetze() -> list[str]:
     return ids
 
 
+def verordnungen() -> list[str]:
+    """Act ids whose index entry names a Verordnung (", VO", ", ZustVO", ... or a one-word name ending in VO) and
+    that are not Gesetze, in index order."""
+    g = set(gesetze())
+    ids = []
+    for f in sorted((CACHE / 'index').glob('*.html')):
+        for i, t in re.findall(r'<a href="/vorschrift/(\d+)"><img[^>]*/>([^<]*)</a>', f.read_text(encoding='utf-8')):
+            t = html.unescape(t).strip()
+            if (re.search(r', [\wÄÖÜäöüß-]*VO;?$', t) or re.fullmatch(r'[\wÄÖÜäöüß-]+VO', t)) and i not in ids and i not in g:
+                ids.append(i)
+    return ids
+
+
 def complete(i: str) -> bool:
     cur = CACHE / 'act' / i / 'current.html'
     if not cur.exists():
@@ -468,5 +482,16 @@ if __name__ == '__main__':
         chunk = ids[n:n + PART_SIZE]
         if all(complete(i) for i in chunk):
             write_part(f'20-gesetze-{n // PART_SIZE + 1:02d}', chunk, country=False)
+        else:
+            break
+    # the Verordnungen (ordinances wave, 2026-10-30): parts of 50 in index order; the last, short part only once
+    # every one is fetched (.cache/vo-done)
+    ids = verordnungen()
+    for n in range(0, len(ids), PART_SIZE):
+        chunk = ids[n:n + PART_SIZE]
+        if len(chunk) < PART_SIZE and not (CACHE / 'vo-done').exists():
+            break
+        if all(complete(i) for i in chunk):
+            write_part(f'40-verordnungen-{n // PART_SIZE + 1:02d}', chunk, country=False)
         else:
             break

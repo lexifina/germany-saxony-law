@@ -1,0 +1,1 @@
+Verified 2026-10-30 (gitlaw-scraper-dell): Saxon Gesetze (acts, versions: 50 315) from REVOSax; independent letters-and-digits check of every version against its raw REVOSax page: 0 differences; local build of all parts into an empty repo: check.py 0 mismatches / 0 trailer errors (main and zukunft); audit_push clean on both branches.
