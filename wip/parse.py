@@ -358,11 +358,14 @@ def act_of(i: str) -> tuple[dict | None, dict, list[str]]:
         if not p['from']:
             problems.append(f'{i} {f.name}: no "gültig ab" date')
             continue
-        if versions and p['from'] <= versions[-1]['from']:
-            problems.append(f'{i} {f.name}: from {p["from"]} not after {versions[-1]["from"]}; left out')
+        if versions and p['from'] < versions[-1]['from']:
+            problems.append(f'{i} {f.name}: from {p["from"]} before {versions[-1]["from"]}; left out')
             continue
         v = {'from': p['from'], 'source_url': f'{BASE}/vorschrift/{i}' + (f'.{int(f.stem[1:])}' if f.stem != 'current' else ''),
              'sha256': hashlib.sha256(f.read_bytes()).hexdigest(), 'units': p['units'], 'credits': {}}
+        if versions and p['from'] == versions[-1]['from']:
+            v['same_day'] = True  # two REVOSax versions valid from one day: the later one is the day's text
+            problems.append(f'{i} {f.name}: a second version valid from {p["from"]}, kept as a same-day version')
         if prev is not None:
             for k in sorted(set(prev['units']) | set(p['units'])):
                 if prev['units'].get(k, {}).get('text') != p['units'].get(k, {}).get('text'):
@@ -426,7 +429,7 @@ def write_part(name: str, ids: list[str], country: bool) -> None:
                'first day; if its footnotes name none, the change is labelled unexplained.',
                'One file per Artikel or Paragraph (section); headings of Teile and Abschnitte stand above the first '
                'provision under them. Footnote markers and sentence numbers are left out; tables are one line per '
-               'row, cells separated by " | ".'] + [f'Left out: {p}' for p in problems],
+               'row, cells separated by " | ".'] + [f'Noted: {p}' for p in problems],
            'ai_use': ['Claude Code (claude-opus-5-5) wrote Lexifina\'s code and chose the sources. No model output is '
                       'used as legal text, dates or credits: every word comes from the REVOSax pages, and every date '
                       'and credit from REVOSax\'s own validity dates and footnotes.']}
