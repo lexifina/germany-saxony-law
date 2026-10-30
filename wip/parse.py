@@ -354,6 +354,9 @@ def act_of(i: str) -> tuple[dict | None, dict, list[str]]:
     prev = None
     for f in files:
         raw = f.read_text(encoding='utf-8')
+        if 'id="lesetext"' not in raw:  # REVOSax lists the version but holds no text ("Datei nicht im Datenbestand")
+            problems.append(f'{i} {f.name}: REVOSax holds no text for this version ("Datei nicht im Datenbestand"); left out')
+            continue
         p = parse_page(raw)
         title = p['title'] or title
         if not p['from']:
