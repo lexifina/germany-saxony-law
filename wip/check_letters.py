@@ -24,7 +24,9 @@ def number_items(m) -> str:
         x = n[0]
         n[0] += 1
         return f'<li>{chr(96 + x) if typ and typ.group(1) == "a" else x} '
-    return re.sub(r'<li[^>]*>', mark, m.group(2))
+    # items of a <ul> nested in the list carry no number (2026-10-30, first seen in Verordnungen)
+    parts = re.split(r'(?s)(<ul[\s>].*?</ul>)', m.group(2))
+    return ''.join(p if p.startswith('<ul') else re.sub(r'<li[^>]*>', mark, p) for p in parts)
 
 
 def source(raw: str) -> str:
@@ -33,7 +35,8 @@ def source(raw: str) -> str:
     s = re.sub(r'(?s)<footer.*?</footer>', '', s)
     s = re.sub(r'(?s)<ol([^>]*)>(.*?)</ol>', number_items, s)  # the numbers the browser shows
     s = re.sub(r'(?s)<a [^>]*href="#FNID[^"]*"[^>]*>.*?</a>|<sup class="satzzahl[^"]*">.*?</sup>', '', s)
-    return ld(html.unescape(re.sub(r'<[^>]+>', ' ', s)).replace('­', ''))
+    # only real tags: a bare "<" in the text ("Klasse 3 < 10") is text, as a browser shows it
+    return ld(html.unescape(re.sub(r'<[A-Za-z/!][^>]*>', ' ', s)).replace('­', ''))
 
 
 def main(paths):

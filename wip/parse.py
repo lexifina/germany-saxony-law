@@ -391,8 +391,8 @@ def act_of(i: str) -> tuple[dict | None, dict, list[str]]:
     if not abk:  # the abbreviation the Eingangsformel of the newest version gives: "(SächsKAG)"
         head = '\n'.join(u['text'] for u in list(versions[-1]['units'].values())[:3])
         m = re.search(r'\((?:[^()]*?[–-]\s*)?([A-ZÄÖÜ][\wÄÖÜäöüß./-]{1,28})\)', head)
-        abk = m.group(1) if m and re.search(r'(?:G|O|StV)$', m.group(1)) else None
-        if not abk:
+        abk = m.group(1) if m and re.search(r'VO$' if VO_MODE else r'(?:G|O|StV)$', m.group(1)) else None
+        if not abk and not VO_MODE:  # a Verordnung is never named after the Gesetz its Eingangsformel cites
             m = re.search(r'\b(Sächs[A-ZÄÖÜ][\wÄÖÜäöüß]*(?:G|O))\b', head.split('\n', 3)[-1] if False else head)
             abk = m.group(1) if m else None
     slug = ('verfassung' if i == '3975' else
@@ -444,6 +444,9 @@ def write_part(name: str, ids: list[str], country: bool) -> None:
     print(name, len(acts), 'acts', nv, 'versions', len(problems), 'problems')
 
 
+VO_MODE = False
+
+
 def gesetze() -> list[str]:
     ids = []
     for f in sorted((CACHE / 'index').glob('*.html')):
@@ -486,6 +489,7 @@ if __name__ == '__main__':
             break
     # the Verordnungen (ordinances wave, 2026-10-30): parts of 50 in index order; the last, short part only once
     # every one is fetched (.cache/vo-done)
+    VO_MODE = True
     ids = verordnungen()
     for n in range(0, len(ids), PART_SIZE):
         chunk = ids[n:n + PART_SIZE]

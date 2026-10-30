@@ -18,8 +18,9 @@ available".
 | --- | --- | --- |
 | `verfassung/` | Verfassung des Freistaates Sachsen vom 27. Mai 1992 | every version since 6 June 1992 |
 | other folders | Saxon Gesetze, one folder per act (named by its abbreviation) | every version REVOSax holds |
+| other folders | Saxon Verordnungen, one folder per act (named by its abbreviation, or `vorschrift-<REVOSax id>` where it has none), added in parts | every version REVOSax holds |
 
-Verordnungen and Verwaltungsvorschriften are not included yet.
+Verwaltungsvorschriften are not included yet.
 
 ## Source
 
