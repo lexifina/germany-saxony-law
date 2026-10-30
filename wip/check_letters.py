@@ -15,10 +15,23 @@ def ld(s):
     return ''.join(ch for ch in s if ch.isalnum())
 
 
+def number_items(m) -> str:
+    typ = re.search(r'type="(\w)"', m.group(1))
+    start = re.search(r'start="(\d+)"', m.group(1))
+    n = [int(start.group(1)) if start else 1]
+
+    def mark(_):
+        x = n[0]
+        n[0] += 1
+        return f'<li>{chr(96 + x) if typ and typ.group(1) == "a" else x} '
+    return re.sub(r'<li[^>]*>', mark, m.group(2))
+
+
 def source(raw: str) -> str:
     s = raw[raw.index('id="lesetext"'):]
     s = s[s.index('>') + 1:s.index('</article>')]
     s = re.sub(r'(?s)<footer.*?</footer>', '', s)
+    s = re.sub(r'(?s)<ol([^>]*)>(.*?)</ol>', number_items, s)  # the numbers the browser shows
     s = re.sub(r'(?s)<a href="#FNID[^"]*"[^>]*>.*?</a>|<sup class="satzzahl[^"]*">.*?</sup>', '', s)
     return ld(html.unescape(re.sub(r'<[^>]+>', ' ', s)).replace('­', ''))
 
