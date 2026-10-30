@@ -89,6 +89,8 @@ def find(n: Node, pred):
 
 def norm(s: str) -> str:
     s = s.replace(' ', ' ').replace(' ', ' ').replace(' ', ' ').replace('­', '')
+    s = s.replace(',,', '„').replace('”', '“')  # one form of German quotes
+    s = re.sub(r'([(\[„]) +', r'\1', s)
     return re.sub(r'[ \t\r\n]+', ' ', s).strip()
 
 
@@ -108,16 +110,30 @@ def text_of(n, br='\n') -> str:
     return ''.join(text_of(k, br) for k in n.kids)
 
 
+HAS_BLOCK = ('p', 'ol', 'ul', 'div', 'table', 'dl')
+
+
+def has_block(k: Node) -> bool:
+    return any(isinstance(x, Node) and x.tag in HAS_BLOCK for x in k.kids)
+
+
+def item(n: Node) -> list[str]:
+    """A list item or definition entry: its lines (nested lists become further lines)."""
+    if has_block(n):
+        return lines(n)
+    s = norm(text_of(n, ' '))
+    return [s] if s else []
+
+
 def lines(n: Node) -> list[str]:
-    """One line per paragraph, list item, table row or definition entry."""
+    """One line per paragraph, list item, table row or definition entry. A line break inside a paragraph is a space."""
     out: list[str] = []
     buf: list[str] = []
 
     def flush():
-        for s in ''.join(buf).split('\n'):
-            s = norm(s)
-            if s:
-                out.append(s)
+        s = norm(''.join(buf))
+        if s:
+            out.append(s)
         buf.clear()
     for k in n.kids:
         if isinstance(k, str):
@@ -129,22 +145,42 @@ def lines(n: Node) -> list[str]:
             cells = [norm(text_of(c, ' ')) for c in k.kids if isinstance(c, Node) and c.tag in ('td', 'th')]
             if any(cells):
                 out.append(' | '.join(cells))
-        elif k.tag in ('section', 'table', 'tbody', 'thead', 'ol', 'ul', 'dl', 'header', 'footer') or k.tag in BLOCKS:
+        elif k.tag == 'dl':
             flush()
-            if k.tag == 'li' and not any(isinstance(x, Node) and x.tag in ('p', 'ol', 'ul', 'div', 'table', 'dl')
-                                         for x in k.kids):
-                buf.append(text_of(k))
-                flush()
-            elif k.tag in ('p', 'dt', 'dd', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption') and not any(
-                    isinstance(x, Node) and x.tag in ('p', 'ol', 'ul', 'div', 'table', 'dl') for x in k.kids):
-                buf.append(text_of(k))
-                flush()
-            else:
-                out += lines(k)
+            dt = ''
+            for x in k.kids:
+                if not isinstance(x, Node):
+                    continue
+                if x.tag == 'dt':
+                    if dt:
+                        out.append(dt)
+                    dt = norm(text_of(x, ' '))
+                elif x.tag == 'dd':
+                    ls = item(x)
+                    if dt:
+                        ls = [f'{dt} {ls[0]}' if ls else dt] + ls[1:]
+                        dt = ''
+                    out += ls
+            if dt:
+                out.append(dt)
+        elif k.tag == 'ol':
+            # The browser numbers these items (1., 2., ... or a), b), ...); the number is written out.
+            flush()
+            typ = k.attrs.get('type') or '1'
+            num = int(k.attrs.get('start') or 1)
+            for x in k.kids:
+                if isinstance(x, Node) and x.tag == 'li':
+                    mark = (f'{chr(96 + num)})' if typ == 'a' else f'{num}.')
+                    ls = item(x)
+                    out += [f'{mark} {ls[0]}' if ls else mark] + ls[1:]
+                    num += 1
+        elif k.tag in ('section', 'table', 'tbody', 'thead', 'ul', 'header', 'footer') or k.tag in BLOCKS:
+            flush()
+            out += item(k) if k.tag in ('li', 'p', 'dt', 'dd', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption') else lines(k)
         elif k.tag == 'br':
-            buf.append('\n')
+            buf.append(' ')
         else:
-            buf.append(text_of(k))
+            buf.append(text_of(k, ' '))
     flush()
     return out
 
