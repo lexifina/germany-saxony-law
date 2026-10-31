@@ -1,4 +1,4 @@
-# Anlage 1 zur StrPrüfVO
+# Anlage zur StrPrüfVO
 Bauwerksklassen Bauwerksklasse 1 Tragwerke mit sehr geringem Schwierigkeitsgrad, insbesondere
 einfache statisch bestimmte ebene Tragwerke aus Holz, Stahl, Stein oder unbewehrtem Beton mit ruhenden Lasten, ohne Nachweis horizontaler Aussteifung;
 Bauwerksklasse 2
@@ -32,3 +32,4 @@ statisch und konstruktiv ungewöhnlich schwierige Tragwerke,
 statisch unbestimmte Tragwerke, die Schnittgrößenbestimmungen nach der Theorie II. Ordnung unter Berücksichtigung des nichtlinearen Werkstoffverhaltens erfordern,
 Tragwerke mit Schwingungsuntersuchungen, soweit nicht in Bauwerksklasse 4 erwähnt,
 sehr schwierige Verbundkonstruktionen.
+## Anlage 2 (aufgehoben)
