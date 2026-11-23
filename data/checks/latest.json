@@ -1,0 +1,47 @@
+{
+ "generated": "2026-11-23T20:49:18Z",
+ "latest": {
+  "revosax|germany/saxony/acts": {
+   "attempt": 1,
+   "audit": null,
+   "census": {
+    "current": 757,
+    "gone": 0,
+    "held": 792,
+    "newest_at_source": null,
+    "newest_in_repo": "sachspvdg",
+    "pending": 35,
+    "repo": 791,
+    "source_in_scope": 795
+   },
+   "check_id": "de-revosax-20261123T203530Z",
+   "commits": null,
+   "corpus": "germany/saxony/acts",
+   "error": null,
+   "finished": "2026-11-23T20:49:16Z",
+   "flags": [],
+   "gap": 44,
+   "note": "REVOSax's keyword index (A to Z) for the acts in the builder's scope (Gesetze and Verordnungen, as its fetch.py classified the entries), and every held act's page for its versions; an act held here and not in the index is still read (its page); first check: the list was recorded as the baseline for the next check",
+   "outcome": "no-change",
+   "published": {
+    "added": [],
+    "changed": [],
+    "removed": []
+   },
+   "requests": 818,
+   "runner": "lawwatch germany (725dd60068)",
+   "schema": "lexifina-check/1",
+   "seen": {
+    "added": [],
+    "changed": [],
+    "removed": []
+   },
+   "snapshot": null,
+   "source": "revosax",
+   "started": "2026-11-23T20:35:30Z",
+   "unexplained": 0,
+   "verify": null
+  }
+ },
+ "schema": "lexifina-check/1"
+}

@@ -1,0 +1,26 @@
+{
+ "sources": [
+  {
+   "id": "revosax",
+   "kind": "legislation",
+   "name": {
+    "en": "REVOSax (Saxon State Chancellery)",
+    "de": "REVOSax (Sächsische Staatskanzlei)"
+   },
+   "url": "https://www.revosax.sachsen.de",
+   "reads": {
+    "en": "the keyword index (A to Z) for the Gesetze and Verordnungen, and each held act's page for its versions",
+    "de": "den alphabetischen Index für die Gesetze und Verordnungen und die Seite jeder Vorschrift hier für ihre Fassungen"
+   },
+   "folders": [
+    "<act>/"
+   ],
+   "schedule": "daily",
+   "state": "watched",
+   "corpora": [
+    "germany/saxony/acts"
+   ],
+   "interval": 1.0
+  }
+ ]
+}
