@@ -8,6 +8,6 @@ How global-law watches every country's sources: [global-law WATCHING.md](https:/
 
 | Source | What is read | Folders | How often | Last read | State |
 | --- | --- | --- | --- | --- | --- |
-| [REVOSax (Saxon State Chancellery)](https://www.revosax.sachsen.de) | the keyword index (A to Z) for the Gesetze and Verordnungen, and each held act's page for its versions | `<act>/` | daily | 2026-11-23 20:35 UTC | watched |
+| [REVOSax (Saxon State Chancellery)](https://www.revosax.sachsen.de) | the keyword index (A to Z) for the Gesetze and Verordnungen, and each held act's page for its versions | `<act>/` | daily | 2026-11-23 23:34 UTC | watched |
 
 Sources are read within their robots.txt and terms, with pauses between requests.

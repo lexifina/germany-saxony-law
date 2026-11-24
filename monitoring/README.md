@@ -6,18 +6,19 @@
 
 Wie global-law jedes Land beobachtet: [global-law monitoring/](https://github.com/lexifina/global-law/tree/main/monitoring). Diese Seite zeigt dasselbe nur für Sachsen: jedes Lesen einer amtlichen Quelle, wann, und was daraus folgte (Vorschriften hinzugefügt, geändert und entfernt). Maschinenlesbar in [data/checks/](../data/checks/) (JSON Lines, Schema `lexifina-check/1`), in `git log` als Commits mit `Kind: check` und Monat für Monat in [checks/](checks/).
 
-**Letzte Prüfung:** 2026-11-23 20:49 UTC, REVOSax (Sächsische Staatskanzlei): 818 Adressen gelesen; 0 hinzugefügt, 0 geändert, 0 entfernt; keine Änderung; 44 nicht veröffentlicht, davon 0 ohne Grund.
+**Letzte Prüfung:** 2026-11-23 23:48 UTC, REVOSax (Sächsische Staatskanzlei): 818 Adressen gelesen; 0 hinzugefügt, 0 geändert, 0 entfernt; keine Änderung; 44 nicht veröffentlicht, davon 0 ohne Grund.
 
 ## Quellen
 
 | Quelle | Ordner | Wie oft | Letzte erfolgreiche Prüfung | Letztes Ergebnis | Stand |
 | --- | --- | --- | --- | --- | --- |
-| [REVOSax (Sächsische Staatskanzlei)](https://www.revosax.sachsen.de) | `<act>/` | täglich | 2026-11-23 20:49 UTC | keine Änderung | beobachtet |
+| [REVOSax (Sächsische Staatskanzlei)](https://www.revosax.sachsen.de) | `<act>/` | täglich | 2026-11-23 23:48 UTC | keine Änderung | beobachtet |
 
 ## Die letzten 30 Tage
 
 | Beginn (UTC) | Quelle | Gelesen | Hinzugefügt | Geändert | Entfernt | Nicht veröffentlicht (ohne Grund) | Ergebnis | Commits |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | ---: |
+| [2026-11-23 23:34](checks/2026-11.md#de-revosax-20261123t233450z) | revosax | 818 | 0 | 0 | 0 | 44 (0) | keine Änderung | — |
 | [2026-11-23 20:35](checks/2026-11.md#de-revosax-20261123t203530z) | revosax | 818 | 0 | 0 | 0 | 44 (0) | keine Änderung | — |
 
 ## Selbst prüfen
