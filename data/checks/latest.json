@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-24T07:25:42Z",
+ "generated": "2026-11-25T07:46:14Z",
  "latest": {
   "revosax|germany/saxony/acts": {
    "attempt": 1,
@@ -14,11 +14,11 @@
     "repo": 791,
     "source_in_scope": 795
    },
-   "check_id": "de-revosax-20261124T070918Z",
+   "check_id": "de-revosax-20261125T070059Z",
    "commits": null,
    "corpus": "germany/saxony/acts",
    "error": null,
-   "finished": "2026-11-24T07:23:00Z",
+   "finished": "2026-11-25T07:14:40Z",
    "flags": [],
    "gap": 44,
    "note": "REVOSax's keyword index (A to Z) for the acts in the builder's scope (Gesetze and Verordnungen, as its fetch.py classified the entries), and every held act's page for its versions; an act held here and not in the index is still read (its page)",
@@ -29,7 +29,7 @@
     "removed": []
    },
    "requests": 818,
-   "runner": "lawwatch germany (22a9910bc1)",
+   "runner": "lawwatch germany (040e66c4a9)",
    "schema": "lexifina-check/1",
    "seen": {
     "added": [],
@@ -38,7 +38,7 @@
    },
    "snapshot": null,
    "source": "revosax",
-   "started": "2026-11-24T07:09:18Z",
+   "started": "2026-11-25T07:00:59Z",
    "unexplained": 0,
    "verify": null
   }

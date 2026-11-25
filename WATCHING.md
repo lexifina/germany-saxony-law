@@ -8,6 +8,6 @@ Wie global-law die Quellen jedes Landes beobachtet: [global-law WATCHING.md](htt
 
 | Quelle | Was gelesen wird | Ordner | Wie oft | Zuletzt gelesen | Stand |
 | --- | --- | --- | --- | --- | --- |
-| [REVOSax (Sächsische Staatskanzlei)](https://www.revosax.sachsen.de) | den alphabetischen Index für die Gesetze und Verordnungen und die Seite jeder Vorschrift hier für ihre Fassungen | `<act>/` | täglich | 2026-11-24 07:09 UTC | beobachtet |
+| [REVOSax (Sächsische Staatskanzlei)](https://www.revosax.sachsen.de) | den alphabetischen Index für die Gesetze und Verordnungen und die Seite jeder Vorschrift hier für ihre Fassungen | `<act>/` | täglich | 2026-11-25 07:00 UTC | beobachtet |
 
 Die Quellen werden im Rahmen ihrer robots.txt und Nutzungsbedingungen gelesen, mit Pausen zwischen den Anfragen.
