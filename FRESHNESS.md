@@ -8,7 +8,7 @@ Wie global-law misst, wie aktuell jedes Land ist: [global-law FRESHNESS.md](http
 
 ### REVOSax (Sächsische Staatskanzlei) · `germany/saxony/acts`
 
-- Die amtliche Quelle zuletzt gelesen und jede Vorschrift hier mit ihr abgeglichen: **2026-11-26 07:16 UTC**.
+- Die amtliche Quelle zuletzt gelesen und jede Vorschrift hier mit ihr abgeglichen: **2026-11-27 07:15 UTC**.
 - Vorschriften hier: 792; aktuell gegenüber der Quelle: 757; an der Quelle geändert seit der Fassung hier: 35; nicht mehr an der Quelle: 0.
 - Nicht veröffentlicht: 44 (an der Quelle geändert seit der Fassung hier: 35, tritt später in Kraft: 5, neu an der Quelle, hier noch nicht veröffentlicht: 4); ohne Grund: 0.
 

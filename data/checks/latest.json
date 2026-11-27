@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-26T07:50:20Z",
+ "generated": "2026-11-27T07:47:56Z",
  "latest": {
   "revosax|germany/saxony/acts": {
    "attempt": 1,
@@ -14,11 +14,11 @@
     "repo": 791,
     "source_in_scope": 795
    },
-   "check_id": "de-revosax-20261126T070226Z",
+   "check_id": "de-revosax-20261127T070148Z",
    "commits": null,
    "corpus": "germany/saxony/acts",
    "error": null,
-   "finished": "2026-11-26T07:16:07Z",
+   "finished": "2026-11-27T07:15:28Z",
    "flags": [],
    "gap": 44,
    "note": "REVOSax's keyword index (A to Z) for the acts in the builder's scope (Gesetze and Verordnungen, as its fetch.py classified the entries), and every held act's page for its versions; an act held here and not in the index is still read (its page)",
@@ -38,7 +38,7 @@
    },
    "snapshot": null,
    "source": "revosax",
-   "started": "2026-11-26T07:02:26Z",
+   "started": "2026-11-27T07:01:48Z",
    "unexplained": 0,
    "verify": null
   }
